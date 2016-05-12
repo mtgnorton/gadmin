@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>学习助手</title>
+
+    <!-- Bootstrap Core CSS -->
+
+    <link href="__PUB__/startbootstrap/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="__PUB__/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="__PUB__/startbootstrap/dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <script src="__PUB__/startbootstrap/bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="__PUB__/startbootstrap/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="__PUB__/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="__PUB__/startbootstrap/dist/js/sb-admin-2.js"></script>
+  <link href="__PUB__/startbootstrap/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+
+
+        <link href="__PUB__/startbootstrap/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+          
+   <!-- <script type="text/javascript" src="__PUB__/jquery/jquery-2.1.1.min.js"></script> -->
+    <script src="__PUB__/Highcharts-4.2.3/js/highcharts.js"></script>
+    <script type="text/javascript" src="__PUB__/Highcharts-4.2.3/js/themes/gray.js"></script>
+    <script src="__PUB__/Highcharts-4.2.3/js/modules/exporting.js"></script>
+
+      
+
+    <link rel="stylesheet" type="text/css" href="__PUB__/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUB__/easyui/themes/icon.css">
+ 
+    <script type="text/javascript" src="__PUB__/easyui/jquery.easyui.min.js"></script>
+
+    
+<style>    .mask{
+display:none;
+width:100%;
+position:absolute;
+background:#fff;
+z-index:10;
+top:0;
+left:0;
+height:100%;
+opacity:0.4;
+}
+ 
+/*弹框*/
+.bomb_box {
+display:none;
+background:#fff;
+position:fixed;
+top:40%;
+left:50%;
+z-index:20;
+}</style>
+ <script type="text/javascript">
+
+
+    var mysqlSelectSortOptions = {
+         
+        chart: {
+        renderTo: 'ph',
+        },
+
+        title: {
+            text: "近7天访问次数统计",
+            x: -20 //center
+        },
+        xAxis: {
+            reversed: false,
+            title: {
+                enabled: true,
+                text: '作业'
+            },
+            gridLineWidth:      1,
+            gridLineDashStyle:  'Dot',
+            categories:     in_x_arr,
+            maxPadding:         0.05,
+            showLastLabel:      true
+        },
+        yAxis: {
+            title: {
+                text:'分值',
+            },
+
+       labels:{
+            step: 1,
+   
+        },
+           
+  
+            gridLineDashStyle:'Dash',
+        },
+        tooltip: {
+            valueSuffix: '访问次数',
+             headerFormat: '<small>{point.key}</small><table><br/>',
+            pointFormatter: function() {
+
+            return '<span style="color:{'+this.series.color+'}"></span>'+
+           this.series.name+': <b>'+this.y+'</b><br/>'
+        }
+        },
+        plotOptions: {
+        line: {
+        dataLabels: {
+            enabled: true,
+            formatter: function() {
+                    return this.y;
+            },
+            }
+         }, 
+        series: {
+        events: {
+         legendItemClick: function(e) {
+           
+            return false;
+         }
+     }
+    },
+    },
+     credits:{
+     enabled:false // 禁用版权信息
+    },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0,
+            labelFormat: '访问次数',
+        },
+        series: [{
+           name : "访问次数",
+           data : in_number_arr,
+           zones: [{
+                value: 0,
+                color: '#f7a35c',
+                dashStyle: 'dot'
+            }, {
+                value: 60,
+                color: '#7cb5ec'
+            }, {
+                color: '#90ed7d'
+            }],
+        
+        },
+        ]
+        };
+        var in_data         =  {$in_data};
+        var in_number_arr   =  [];
+        var in_x_arr        =  [];  
+        var now_time        = {$now_time};
+
+        $(function(){
+            for(var p in in_data){
+            in_x_arr.push(p);
+            in_number_arr.push(in_data[p]);
+            }
+        if (in_x_arr.length != 0) {
+         mysqlSelectSortOptions.series[0].data       = in_number_arr;
+         mysqlSelectSortOptions.xAxis.categories     = in_x_arr;
+         var chart = new Highcharts.Chart(mysqlSelectSortOptions);
+         $("input.textbox-text").val(now_time);
+        }
+        });
+    
+       
+
+    </script>
+
+</head>
+
+<body >
+   <div id="wrapper">
+ <include file="Public/sbider" />
+    <input type="hidden" id="getChart" value="{:U('Admin/Chartshow/getChart')}">
+        <!-- Page Content -->
+        <div id="page-wrapper" style="background-image : url(__PUB__/picture/b5.jpg);background-repeat : repeat-x" >
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                    
+                    <div class="form-group has-success" style="width:100px;float:left;margin-right: 100px;margin-top:20px">
+                                            <label class="control-label" for="inputSuccess">请输入时间</label>
+                                           <input class="easyui-datebox" id="time"></input>
+                                        </div>
+                                    
+                                        <div class="form-group has-error" style="width:100px; float:left;margin-right: 40px;">
+                                            <label class="control-label" for="inputError" >请输入查询类型1</label>
+                                        
+                                            <select name="type" id='type'>
+                                            <option value="wxcode">微信展现</option>
+                                            <option value="site" selected="selected">网站展现</option>
+                                            </select>
+                                        </div>
+                                          <div class="form-group has-error" style="width:100px; float:left;margin-right: 40px;">
+                                         
+                                             <label class="control-label" for="inputError" >请输入查询类型2</label>
+                                        
+                                            <select name="path" id='path'>
+                                    
+                                            <option value="jf" >jf</option>
+                                            <option value="qb" >qb</option>
+                                            <option value="qbwm">qbwm</option>
+                                            <option value="fx" selected="selected" >fx</option>
+                                            <option value="sy" >sy</option>
+                                            <option value="hf" >hf</option>
+                                            </select>
+                                        </div>
+                        <h1 class="page-header"><button type="button" class="btn btn-outline btn-primary btn-lg"
+                        onclick="count()">点击查询</button></h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                    <!-- <div class="mask"></div> -->
+                    
+                    <div class="ph" id="ph" style="min-width: 310px; height: 400px; margin: 0 auto;margin-bottom: 30px";></div>
+            </div>
+            <!-- /.container-fluid -->
+            <div class="mask"></div>
+
+<div class="bomb_box" id="load"><img src="__PUB__/picture/load.gif" alt=""></div>
+             <div align="center" id="show_time"><h3>{$show_time}详细信息</h3></div>
+             <div id='mytable'>
+              <table class="table  table-bordered " id="dataTables-example" >
+                                    <thead>
+                                        <tr>
+                                        <th><span class="label label-warning">序号</span></th>
+                                     <th><span class="label label-warning">网站名</span></th>
+                                     <th><span class="label label-warning">访问总数</span></th>
+       
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                   
+                                      <volist name="one_data" id="value" key="key" >
+                                        <tr class="odd gradeX" >
+                                        <td >{$key}</td>
+                                        <td>{$value['site']}</td>
+                                        <td>{$value['number']}</td>    
+                                        </tr>
+                                    </volist>
+                                  
+                                    </tbody>
+                                </table>
+                                   </div>
+        
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+
+
+</body>
+  <!-- jQuery -->
+
+         <script src="__PUB__/sweetalert-master/dist/sweetalert.min.js"></script> 
+    <link rel="stylesheet" type="text/css" href="__PUB__/sweetalert-master/dist/sweetalert.css">
+        <script src="__PUB__/startbootstrap/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="__PUB__/startbootstrap/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+  <script src="__PUB__/sm/sm.js"></script>
+        <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+                responsive: true
+        });
+    });
+    </script>
+</html>

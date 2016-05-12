@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>学习助手</title>
+
+    <!-- Bootstrap Core CSS -->
+
+    <link href="__PUB__/startbootstrap/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="__PUB__/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="__PUB__/startbootstrap/dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <script src="__PUB__/startbootstrap/bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="__PUB__/startbootstrap/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="__PUB__/startbootstrap/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="__PUB__/startbootstrap/dist/js/sb-admin-2.js"></script>
+  <link href="__PUB__/startbootstrap/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
+
+
+        <link href="__PUB__/startbootstrap/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+   <!-- <script type="text/javascript" src="__PUB__/jquery/jquery-2.1.1.min.js"></script> -->
+    <script src="__PUB__/Highcharts-4.2.3/js/highcharts.js"></script>
+    <script type="text/javascript" src="__PUB__/Highcharts-4.2.3/js/themes/gray.js"></script>
+    <script src="__PUB__/Highcharts-4.2.3/js/modules/exporting.js"></script>
+
+     <link rel="stylesheet" type="text/css" href="__PUB__/sm/ShowCsv.css">
+
+    <link rel="stylesheet" type="text/css" href="__PUB__/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUB__/easyui/themes/icon.css">
+
+    <script type="text/javascript" src="__PUB__/easyui/jquery.easyui.min.js"></script>
+
+<script>
+function change_width(argument) {
+    setTimeout(function(){
+     $("#top_div").css('width',$("#dataTables-example").width());
+     $("#f1").css('width',$(".sorting_asc").width());
+      var i = 2;
+    $(".sorting").each(function(){
+
+var width = $(this).width();
+
+$("#f"+i).css("width",width);
+
+i++;
+});
+i =2;
+},100);
+
+}
+
+$(function(){
+change_width();
+$(window).resize(function(){
+  change_width();
+});
+
+});
+
+
+
+</script>
+</head>
+
+<body >
+
+   <div id="wrapper">
+ <include file="Public/sbider" />
+
+    <input type="hidden" id="get_query_data" value="{:U('Admin/ShowCsv/get_query_data')}">
+        <!-- Page Content -->
+        <div id="page-wrapper" >
+            <div class="container-fluid">
+            <div style="" id="top_div">
+
+                                     <div id='f1' class="fix_sum">总和</div>
+                                     <div id="f2" class="fix_sum">时间：——</div>
+                                     <div id="f3" class="fix_sum">账户：——</div>
+                                     <div id="f4" class="fix_sum">推广计划：——</div>
+                                     <div id="f5" class="fix_sum">{$sum_data.show_number_sum}</div>
+                                     <div id="f6" class="fix_sum">{$sum_data.click_number_sum}</div>
+                                     <div id="f7" class="fix_sum">{$sum_data.consume_sum}</div>
+                                     <div id="f8" class="fix_sum">{$sum_data['CTR_sum'] *100}%</div>
+                                     <div id="f9" class="fix_sum">{$sum_data['ave_con_sum'] *100 }%</div>
+
+            </div>
+                <div class="row">
+                    <div class="col-lg-12">
+
+                    <div class="form-group has-success"  id="start_div" style="width:120px;float:left;margin-right: 100px;margin-top:20px">
+                                            <label class="control-label" for="inputSuccess">请输入开始时间</label>
+                                           <input class="easyui-datebox" id="start_time"></input>
+                                        </div>
+                     <div class="form-group has-success" id="end_div" style="width:120px;float:left;margin-right: 100px;margin-top:20px">
+                                            <label class="control-label" for="inputSuccess">请输入结束时间</label>
+                                           <input class="easyui-datebox" id="start_time"></input>
+                                        </div>
+                                        <div class="form-group has-error" style="width:140px; float:left;margin-right: 40px;padding: 10px">
+                                            <label class="control-label" for="inputError" >请输入账户名</label>
+                                            <input type="text" class="form-control" id="account" >
+                                        </div>
+                                         <div class="form-group has-error" style="width:140px; float:left;margin-right: 40px;padding: 10px">
+                                            <label class="control-label" for="inputError" >请输入推广计划</label>
+                                            <input type="text" class="form-control" id="spread_plan" >
+                                        </div>
+
+                        <button style="margin-top:25px" type="button" class="btn btn-outline btn-primary btn-lg"
+                        onclick="get_query_data()">点击查询</button>
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
+                    <!-- <div class="mask"></div> -->
+
+
+            </div>
+            <!-- /.container-fluid -->
+            <div class="mask"></div>
+  <input type="hidden" id="max_time" value="{$max_time}">
+<div class="bomb_box" id="load"><img src="__PUB__/picture/load.gif" alt=""></div>
+             <div align="center" id="show_time"><h3>{$max_time}详细信息</h3></div>
+             <div id='mytable'>
+              <table class="table  table-bordered " id="dataTables-example" >
+                                    <thead>
+                                     <tr>
+                                     <th id="t1"><span class="label label-warning the_th">序号</span></th>
+                                     <th id="t2"><span class="label label-warning the_th">时间</span></th>
+                                     <th id="t3"><span class="label label-warning the_th">账户</span></th>
+                                     <th id="t4"><span class="label label-warning the_th">推广计划</span></th>
+                                     <th id="t5"><span class="label label-warning the_th">展示量</span></th>
+                                     <th id="t6"><span class="label label-warning the_th">点击量</span></th>
+                                      <th id="t7"><span class="label label-warning the_th">消费量</span></th>
+                                      <th id="t8"><span class="label label-warning the_th">点击率</span></th>
+                                      <th id="t9"><span class="label label-warning the_th">消费率</span></th>
+                                    </tr>
+                                    </thead>
+                                         <thead>
+                                    <tr style="background-color: orange">
+                                     <td>总和</td>
+                                     <td>——</td>
+                                     <td>——</td>
+                                     <td>——</td>
+                                     <td>{$sum_data.show_number_sum}</td>
+                                     <td>{$sum_data.click_number_sum}</td>
+                                     <td>{$sum_data.consume_sum}</td>
+                                     <td>{$sum_data['CTR_sum'] *100}%</td>
+                                     <td>{$sum_data['ave_con_sum'] *100 }%</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                      <volist name="today_data" id="value" key="key" >
+                                        <tr class="odd gradeX" >
+                                        <td >{$key}</td>
+                                        <td>{$value['time']}</td>
+                                        <td>{$value['account']}</td>
+                                        <td>{$value['spread_plan']}</td>
+                                        <td>{$value['show_number']}</td>
+                                        <td>{$value['click_number']}</td>
+                                        <td>{$value['consume']}</td>
+                                        <td>{$value['ctr']*100}%</td>
+                                        <td>{$value['ave_price']*100}%</td>
+                                        </tr>
+                                    </volist>
+
+                                    </tbody>
+                                </table>
+                                   </div>
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+
+
+</body>
+  <!-- jQuery -->
+
+         <script src="__PUB__/sweetalert-master/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUB__/sweetalert-master/dist/sweetalert.css">
+        <script src="__PUB__/startbootstrap/bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="__PUB__/startbootstrap/bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+  <script src="__PUB__/sm/sm.js"></script>
+        <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+           language: {
+      "sProcessing": "处理中...",
+      "sLengthMenu": "显示 _MENU_ 项结果",
+      "sZeroRecords": "没有匹配结果",
+      "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+      "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+      "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+      "sInfoPostFix": "",
+      "sSearch": "搜索:",
+      "sUrl": "",
+      "sEmptyTable": "表中数据为空",
+      "sLoadingRecords": "载入中...",
+      "sInfoThousands": ",",
+      "oPaginate": {
+        "sFirst": "首页",
+        "sPrevious": "上页",
+        "sNext": "下页",
+        "sLast": "末页"
+      },
+      "oAria": {
+        "sSortAscending": ": 以升序排列此列",
+        "sSortDescending": ": 以降序排列此列"
+      }
+    },
+                responsive: true,
+               "aLengthMenu": [[10, 25, 50, 100, 200], ["10", "25", "50", "100", "200"]] ,
+        });
+
+    });
+    </script>
+</html>
