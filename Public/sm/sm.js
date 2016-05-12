@@ -21,17 +21,17 @@
         var path        =   $("#path").val();
         var time        =   $(".textbox-value").val();
 
-        if (type == '') {
+        if (type === '') {
         sweetAlert('请输入类型1','','error');
         return;
         }
-        if (path == '') {
+        if (path === '') {
         sweetAlert('请输入类型2','','error');
         return;
         }
-        if (time == '') {
+        if (time === '') {
         time = $("input.textbox-text").val();
-        if (time == '') {
+        if (time === '') {
         sweetAlert('请输入时间','','error');
         return;
         }

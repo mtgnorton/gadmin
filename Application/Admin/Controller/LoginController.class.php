@@ -16,23 +16,24 @@ use Think\Controller;
 	 */
 
 class LoginController extends Controller
-{	
+{
 
-	
+
 	public function index($course='',$tran_class='')
 	{
 
 	$this->display();
 	}
 	public function judge_login($value='')
-	{	
+	{
 		$data 			= I('post.data');
 		$email 			= $data['0']['value'];
 		$password		= $data['1']['value'];
-		
+
 		$userModel 		= M('user');
 		$password_d 		= $userModel->where("email='$email'")->getField('password');
-		if ($password === $password_d) {
+		$judge_password 	= crypt($password,'mtg');
+		if ($judge_password === $password_d) {
 		session('email',$email);
 		$this->ajaxReturn(
 			array(
@@ -55,5 +56,10 @@ class LoginController extends Controller
 		session(null);
 		$this->success("退出成功",'index');
 	}
-	
+	public function test($value='')
+	{
+		$t = crypt('mtg456','mtg');
+		$m = crypt('mtg456','mtg');
+
+	}
 }
